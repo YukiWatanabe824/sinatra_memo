@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title><%= @title %>:page</title>
+  </head>
+  <body>    
+    <h1>メモアプリ</h1>
+    <header>
+      <p>...</p>
+    </header>
+    <%= yield %>
+    <footer>
+      <p>...</p>
+      <ul>
+        <li>
+          <a href="/memos/">メモ一覧</a>
+        </li>
+        <li>
+          <a href="/memos/new/">新規メモ</a>
+        </li>
+    </footer>
+  </body>
+</html>
