@@ -14,4 +14,4 @@ $ vi Gemfile
 $ bundle install --path vendor/bundle
 $ budnle exec ruby memo.rb
 ```
-その後、ブラウザで"http://localhost:4567/"にアクセス
+その後、ブラウザで "http://localhost:4567/" にアクセス
