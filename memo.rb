@@ -17,12 +17,12 @@ end
 
 get '/memos/' do
   @hash = ''
-  memofiles = Dir.glob('memos/*')
+  memofiles = Dir.glob('memos/*').sort
   memofiles.each do |memofile|
     File.open(memofile, 'r') do |memodata|
       JSON.parse(memodata.read).each_value do |memojson|
         @hash += "<li>#{h(memojson['title'])} : #{h(memojson['content'])}"
-        @hash += " <a href=\"http://localhost:4567/memos/edit/memo#{h(memojson['id'])}\">修正する</a> </li>"
+        @hash += " <a href=\"http://localhost:4567/memos/memo#{h(memojson['id'])}/edit\">修正する</a> </li>"
       end
     end
   end
@@ -33,13 +33,14 @@ get '/memos/new/' do
   erb :new_memo
 end
 
-post '/memos/new/' do
+post '/memos/' do
   maxid = 0
   oldmemos = []
   memofiles = Dir.glob('memos/*')
-  memofiles.each do |memofile|
-    oldmemos << memofile.gsub('memos/memo', '').to_i
-  end
+  oldmemos = memofiles.map{|memofile| memofile.gsub('memos/memo', '').to_i}
+ # memofiles.each do |memofile|
+ #   oldmemos << memofile.gsub('memos/memo', '').to_i
+ # end
   oldmemos.each do |oldmemo|
     maxid = oldmemo if oldmemo > maxid
   end
@@ -50,7 +51,7 @@ post '/memos/new/' do
   redirect '/memos/new/'
 end
 
-get '/memos/edit/:memo' do |m|
+get '/memos/:memo/edit' do |m|
   @title = ''
   @content = ''
   @id = ''
@@ -64,11 +65,11 @@ get '/memos/edit/:memo' do |m|
   erb :edit_memo
 end
 
-patch '/memos/edit/:memo' do
+patch '/memos/:memo/edit' do
   File.open("memos/memo#{params[:id]}.json", 'w') do |file|
     file.print({ "memo#{params[:id]}" => { 'id' => params[:id], 'title' => h(params[:title]), 'content' => h(params[:content]) } }.to_json)
   end
-  redirect "/memos/edit/memo#{params[:id]}"
+  redirect "/memos/memo#{params[:id]}/edit"
 end
 
 delete '/memos/delete/:memo' do

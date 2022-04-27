@@ -1,5 +1,5 @@
 <h2>既存メモの編集</h2>
-<form method="post" action="/memos/edit/memo<%= @id %>">
+<form method="post" action="/memos/memo<%= @id %>/edit">
   <label>
     メモのID:
     <input type="text" name="id" size=50 maxlength=20 value="<%= @id %>" readonly><span>※編集不可</span>
