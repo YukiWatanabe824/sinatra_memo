@@ -1,27 +1,27 @@
 <h2>既存メモの編集</h2>
-<form method="post" action="/memos/memo<%= @id %>/edit">
+<form method="post" action="/memos/memo<%= @memo["id"] %>/edit">
   <label>
     メモのID:
-    <input type="text" name="id" size=50 maxlength=20 value="<%= @id %>" readonly><span>※編集不可</span>
+    <input type="text" name="id" size=50 maxlength=20 value="<%= @memo["id"] %>" readonly><span>※編集不可</span>
   </label>
   <br>
   <label>
     メモのタイトル:
-    <input type="text" name="title" size=50 maxlength=20 placeholder="<%= @title %>">
+    <input type="text" name="title" size=50 maxlength=20 placeholder="<%= h(@memo["title"]) %>">
   </label>
   <br>
   <label>
     メモの内容:
-    <input type="text" name="content" size=50 maxlength=100 placeholder="<%= @content %>">
+    <input type="text" name="content" size=50 maxlength=100 placeholder="<%= h(@memo["content"]) %>">
   </label>
   <br>
   <input type="hidden" name="_method" value="patch">
   <input type="submit" value="修正する">
 </form>
-<form method="post" action="/memos/delete/memo<%= @id %>">
+<form method="post" action="/memos/memo<%= @memo["id"] %>/delete">
   <input type="hidden" name="_method" value="delete">
-    <input type="hidden" name="id" value= "<%= @id %>">
-    <input type="hidden" name="title" size=50 value="<%= @title %>">
-    <input type="hidden" name="content" size=50 value="<%= @content %>">
+    <input type="hidden" name="id" value= "<%= @memo["id"] %>">
+    <input type="hidden" name="title" size=50 value="<%= @memo["title"] %>">
+    <input type="hidden" name="content" size=50 value="<%= @memo["content"] %>">
   <input type="submit" value="削除する">
 </form>
