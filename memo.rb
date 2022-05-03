@@ -32,12 +32,8 @@ get '/memos/new/' do
 end
 
 post '/memos/' do
-  maxid = 0
-  memofiles = Dir.glob('memos/*')
-  oldmemos = memofiles.map { |memofile| memofile.gsub('memos/memo', '').to_i }
-  oldmemos.each do |oldmemo|
-    maxid = oldmemo if oldmemo > maxid
-  end
+  memoid_list = Dir.glob('memos/*').map { |memofile| memofile.gsub('memos/memo', '').to_i }
+  maxid = memoid_list.max
 
   File.open("memos/memo#{maxid + 1}.json", 'w') do |file|
     file.print({ "memo#{maxid + 1}" => { id: maxid + 1, title: params[:title], content: params[:content] } }.to_json)
