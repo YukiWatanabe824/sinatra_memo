@@ -16,12 +16,11 @@ get '/' do
 end
 
 get '/memos/' do
-  @hash = []
-  memofiles = Dir.glob('memos/*').sort
-  memofiles.each do |memofile|
-    File.open(memofile, 'r') do |memodata|
+  @memo_list = []
+  Dir.glob('memos/*').sort.each do |memofiles|
+    File.open(memofiles, 'r') do |memodata|
       JSON.parse(memodata.read).each_value do |memojson|
-        @hash << memojson
+        @memo_list << memojson
       end
     end
   end

@@ -1,6 +1,6 @@
 <h2>メモのリスト</h2>
 <ol>
-  <% @hash.each do |memo| %>
+  <% @memo_list.each do |memo| %>
     <li><a href="http://localhost:4567/memos/memo<%= memo["id"] %>/edit">
         メモ<%= memo["id"] %></a>
       <ul>
