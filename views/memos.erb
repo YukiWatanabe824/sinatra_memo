@@ -1,0 +1,12 @@
+<h2>メモのリスト</h2>
+<ol>
+  <% @memo_list.each do |memo| %>
+    <li><a href="http://localhost:4567/memos/memo<%= memo["id"] %>/edit">
+        メモ<%= memo["id"] %></a>
+      <ul>
+        <li>タイトル : <%= h(memo["title"]) %></li>
+        <li>内容 : <%= h(memo["content"]) %></li>
+        </ul>
+    </li>
+  <% end %>
+</ol>

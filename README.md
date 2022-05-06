@@ -3,14 +3,14 @@
 メモのタイトルとその内容とを保存できるアプリです。
 ## 使用手順
 ```
-$ git clone #gitのURL
-$ cd メモアプリのディレクトリ
+$ git clone https://github.com/YukiWatanabe824/sinatra_memo.git
 $ gem install bundler
 $ vi Gemfile
   #以下をGemfileに記入
   gem 'sinatra'
-  gem 'webrick'
   gem 'sinatra-contrib'
+  gem 'webrick'
+
 $ bundle install --path vendor/bundle
 $ budnle exec ruby memo.rb
 ```
