@@ -3,6 +3,7 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
+require 'pg'
 enable :method_override
 
 helpers do
@@ -11,20 +12,53 @@ helpers do
   end
 end
 
+class Memo
+  class << self
+    def connect
+      conn_info = {}
+      File.open('database.json', 'r') do |db_file|
+        conn_info = JSON.parse(db_file.read)
+      end
+      PG.connect(host: conn_info['host'],
+                 user: conn_info['user'],
+                 password: conn_info['pass'],
+                 dbname: conn_info['db'],
+                 port: conn_info['port'])
+    end
+
+    def create(title: memo_title, content: memo_content)
+      conn = Memo.connect
+      conn.exec("INSERT INTO memo(title, content) VALUES('#{title}', '#{content}')")
+    end
+
+    def select
+      conn = Memo.connect
+      conn.exec('SELECT * FROM memo ORDER BY id')
+    end
+
+    def search_select(id: memo_id)
+      conn = Memo.connect
+      conn.exec("SELECT * FROM memo WHERE id = #{id}")
+    end
+
+    def update(id: memo_id, title: memo_title, content: memo_content)
+      conn = Memo.connect
+      conn.exec("UPDATE memo SET title = '#{title}', content = '#{content}' WHERE id = #{id}")
+    end
+
+    def delete(id: memo_id)
+      conn = Memo.connect
+      conn.exec("DELETE FROM memo WHERE id = #{id}")
+    end
+  end
+end
+
 get '/' do
   redirect '/memos/'
 end
 
 get '/memos/' do
-  @hash = []
-  memofiles = Dir.glob('memos/*').sort
-  memofiles.each do |memofile|
-    File.open(memofile, 'r') do |memodata|
-      JSON.parse(memodata.read).each_value do |memojson|
-        @hash << memojson
-      end
-    end
-  end
+  @hash = Memo.select
   erb :memos
 end
 
@@ -33,38 +67,35 @@ get '/memos/new/' do
 end
 
 post '/memos/' do
-  maxid = 0
-  memofiles = Dir.glob('memos/*')
-  oldmemos = memofiles.map { |memofile| memofile.gsub('memos/memo', '').to_i }
-  oldmemos.each do |oldmemo|
-    maxid = oldmemo if oldmemo > maxid
-  end
-
-  File.open("memos/memo#{maxid + 1}.json", 'w') do |file|
-    file.print({ "memo#{maxid + 1}" => { id: maxid + 1, title: params[:title], content: params[:content] } }.to_json)
-  end
+  Memo.create(title: params[:title], content: params[:content])
   redirect '/memos/new/'
 end
 
 get '/memos/:memo/edit' do |m|
-  @memo = {}
-  File.open("memos/#{m}.json", 'r') do |memodata|
-    JSON.parse(memodata.read).each_value do |memojson|
-      @memo = memojson
-    end
+  memo_id = m.delete('memo').to_i
+  @memo = []
+  db_memo_id_list = []
+  Memo.select.each do |result|
+    db_memo_id_list << result['id'].to_i
   end
+  if db_memo_id_list.find { |db_memo_id| db_memo_id == memo_id }
+    Memo.search_select(id: memo_id).each do |result|
+      @memo = result
+    end
+  else
+    redirect :not_found
+  end
+
   erb :edit_memo
 end
 
 patch '/memos/:memo/edit' do
-  File.open("memos/memo#{params[:id]}.json", 'w') do |file|
-    file.print({ "memo#{params[:id]}" => { id: params[:id], title: params[:title], content: params[:content] } }.to_json)
-  end
+  Memo.update(id: params[:id].to_i, title: params[:title], content: params[:content])
   redirect "/memos/memo#{params[:id]}/edit"
 end
 
-delete '/memos/:memo/delete' do
-  File.delete("memos/memo#{params[:id]}.json")
+delete '/memos/:memo' do
+  Memo.delete(id: params[:id].to_i)
   redirect '/memos/'
 end
 

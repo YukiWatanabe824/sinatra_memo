@@ -7,6 +7,7 @@ $ git clone https://github.com/YukiWatanabe824/sinatra_memo.git
 $ gem install bundler
 $ vi Gemfile
   #以下をGemfileに記入
+  gem 'pg'
   gem 'sinatra'
   gem 'sinatra-contrib'
   gem 'webrick'

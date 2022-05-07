@@ -18,10 +18,8 @@
   <input type="hidden" name="_method" value="patch">
   <input type="submit" value="修正する">
 </form>
-<form method="post" action="/memos/memo<%= @memo["id"] %>/delete">
+<form method="post" action="/memos/memo<%= @memo["id"] %>">
   <input type="hidden" name="_method" value="delete">
-    <input type="hidden" name="id" value= "<%= @memo["id"] %>">
-    <input type="hidden" name="title" size=50 value="<%= @memo["title"] %>">
-    <input type="hidden" name="content" size=50 value="<%= @memo["content"] %>">
+  <input type="hidden" name="id" value= "<%= @memo["id"] %>">
   <input type="submit" value="削除する">
 </form>
