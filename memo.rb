@@ -19,11 +19,7 @@ class Memo
       File.open('database.json', 'r') do |db_file|
         conn_info = JSON.parse(db_file.read)
       end
-      PG.connect(host: conn_info['host'],
-                 user: conn_info['user'],
-                 password: conn_info['pass'],
-                 dbname: conn_info['db'],
-                 port: conn_info['port'])
+      PG.connect(dbname: conn_info['db'])
     end
 
     def create(title: memo_title, content: memo_content)

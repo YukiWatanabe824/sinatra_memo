@@ -13,6 +13,16 @@ $ vi Gemfile
   gem 'webrick'
 
 $ bundle install --path vendor/bundle
+
+# データベースのインストールと設定
+$ brew install postgresql
+$ psql -d postgres
+postgres=# CREATE DATABASE memo_sinatra;
+postgres=# \c memo_sinatra;
+postgres=# CREATE TABLE memo(id serial not null, title varchar(25) not null, content varchar(100) not null);
+postgres=# \q
+
+# プログラムの実行
 $ budnle exec ruby memo.rb
 ```
 その後、ブラウザで "http://localhost:4567/" にアクセス
