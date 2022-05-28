@@ -54,7 +54,7 @@ get '/' do
 end
 
 get '/memos/' do
-  @hash = Memo.select
+  @memo_list = Memo.select
   erb :memos
 end
 
