@@ -5,17 +5,9 @@
 ```
 $ git clone https://github.com/YukiWatanabe824/sinatra_memo.git
 $ gem install bundler
-$ vi Gemfile
-  #以下をGemfileに記入
-  gem 'pg'
-  gem 'sinatra'
-  gem 'sinatra-contrib'
-  gem 'webrick'
-
-$ bundle install --path vendor/bundle
+$ bundle install
 
 # データベースのインストールと設定
-$ brew install postgresql
 $ psql -d postgres
 postgres=# CREATE DATABASE memo_sinatra;
 postgres=# \c memo_sinatra;
