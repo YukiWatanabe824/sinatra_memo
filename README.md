@@ -14,6 +14,9 @@ postgres=# \c memo_sinatra;
 postgres=# CREATE TABLE memo(id serial not null, title varchar(25) not null, content varchar(100) not null);
 postgres=# \q
 
+# データベースの接続設定
+環境変数 "PGDATABASE" に接続するデータベース名を指定し、デフォルト接続設定を変更する
+
 # プログラムの実行
 $ budnle exec ruby memo.rb
 ```

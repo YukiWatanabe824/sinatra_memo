@@ -15,11 +15,7 @@ end
 class Memo
   class << self
     def connect
-      conn_info = {}
-      File.open('database.json', 'r') do |db_file|
-        conn_info = JSON.parse(db_file.read)
-      end
-      PG.connect(dbname: conn_info['db'])
+      PG.connect()
     end
 
     def create(title: memo_title, content: memo_content)
