@@ -76,13 +76,13 @@ get '/memos/:memo_id/edit' do |memo_id|
   erb :edit_memo
 end
 
-patch '/memos/:memo/edit' do
-  Memo.update(id: params[:id].to_i, title: params[:title], content: params[:content])
+patch '/memos/:memo/edit' do |memo_id|
+  Memo.update(id: memo_id.to_i, title: params[:title], content: params[:content])
   redirect "/memos/#{params[:id]}/edit"
 end
 
-delete '/memos/:memo' do
-  Memo.delete(id: params[:id].to_i)
+delete '/memos/:memo' do |memo_id|
+  Memo.delete(id: memo_id.to_i)
   redirect '/memos/'
 end
 
