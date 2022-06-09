@@ -15,35 +15,32 @@ end
 class Memo
   class << self
     def connect
-      PG.connect()
+      @connection = PG.connect()
     end
 
     def create(title: memo_title, content: memo_content)
-      conn = Memo.connect
-      conn.exec("INSERT INTO memo(title, content) VALUES('#{title}', '#{content}')")
+      @connection.exec("INSERT INTO memo(title, content) VALUES('#{title}', '#{content}')")
     end
 
     def select
-      conn = Memo.connect
-      conn.exec('SELECT * FROM memo ORDER BY id')
+      @connection.exec('SELECT * FROM memo ORDER BY id')
     end
 
     def search_select(id: memo_id)
-      conn = Memo.connect
-      conn.exec("SELECT * FROM memo WHERE id = #{id}")
+      @connection.exec("SELECT * FROM memo WHERE id = #{id}")
     end
 
     def update(id: memo_id, title: memo_title, content: memo_content)
-      conn = Memo.connect
-      conn.exec("UPDATE memo SET title = '#{title}', content = '#{content}' WHERE id = #{id}")
+      @connection.exec("UPDATE memo SET title = '#{title}', content = '#{content}' WHERE id = #{id}")
     end
 
     def delete(id: memo_id)
-      conn = Memo.connect
-      conn.exec("DELETE FROM memo WHERE id = #{id}")
+      @connection.exec("DELETE FROM memo WHERE id = #{id}")
     end
   end
 end
+
+Memo.connect
 
 get '/' do
   redirect '/memos/'
