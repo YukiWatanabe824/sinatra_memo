@@ -27,7 +27,11 @@ class Memo
     end
 
     def search_select(id: memo_id)
-      @connection.exec("SELECT * FROM memo WHERE id = #{id}")
+      memo = []
+      @connection.exec("SELECT * FROM memo WHERE id = #{id}").each do |result|
+        memo = result
+      end
+      memo
     end
 
     def update(id: memo_id, title: memo_title, content: memo_content)
@@ -60,17 +64,11 @@ post '/memos/' do
   redirect '/memos/new/'
 end
 
-get '/memos/:memo/edit' do |m|
-  memo_id = m.delete('memo').to_i
+get '/memos/:memo_id/edit' do |memo_id|
+  @memo_id = memo_id.to_i
   @memo = []
-  db_memo_id_list = []
-  Memo.select.each do |result|
-    db_memo_id_list << result['id'].to_i
-  end
-  if db_memo_id_list.find { |db_memo_id| db_memo_id == memo_id }
-    Memo.search_select(id: memo_id).each do |result|
-      @memo = result
-    end
+  if memo = Memo.search_select(id: @memo_id)
+    @memo = memo
   else
     redirect :not_found
   end
@@ -80,7 +78,7 @@ end
 
 patch '/memos/:memo/edit' do
   Memo.update(id: params[:id].to_i, title: params[:title], content: params[:content])
-  redirect "/memos/memo#{params[:id]}/edit"
+  redirect "/memos/#{params[:id]}/edit"
 end
 
 delete '/memos/:memo' do

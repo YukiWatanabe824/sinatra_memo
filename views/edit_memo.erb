@@ -1,8 +1,8 @@
 <h2>既存メモの編集</h2>
-<form method="post" action="/memos/memo<%= @memo["id"] %>/edit">
+<form method="post" action="/memos/<%= @memo_id %>/edit">
   <label>
     メモのID:
-    <input type="text" name="id" size=50 maxlength=20 value="<%= @memo["id"] %>" readonly><span>※編集不可</span>
+    <input type="text" name="id" size=50 maxlength=20 value="<%= @memo_id %>" readonly><span>※編集不可</span>
   </label>
   <br>
   <label>
@@ -18,8 +18,8 @@
   <input type="hidden" name="_method" value="patch">
   <input type="submit" value="修正する">
 </form>
-<form method="post" action="/memos/memo<%= @memo["id"] %>">
+<form method="post" action="/memos/<%= @memo_id %>">
   <input type="hidden" name="_method" value="delete">
-  <input type="hidden" name="id" value= "<%= @memo["id"] %>">
+  <input type="hidden" name="id" value= "<%= @memo_id %>">
   <input type="submit" value="削除する">
 </form>
