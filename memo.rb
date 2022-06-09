@@ -22,11 +22,11 @@ class Memo
       @connection.exec("INSERT INTO memo(title, content) VALUES('#{title}', '#{content}')")
     end
 
-    def select
+    def search
       @connection.exec('SELECT * FROM memo ORDER BY id')
     end
 
-    def search_select(id: memo_id)
+    def select(id: memo_id)
       memo = []
       @connection.exec("SELECT * FROM memo WHERE id = #{id}").each do |result|
         memo = result
@@ -51,7 +51,7 @@ get '/' do
 end
 
 get '/memos/' do
-  @memo_list = Memo.select
+  @memo_list = Memo.search
   erb :memos
 end
 
@@ -66,11 +66,11 @@ end
 
 get '/memos/:memo_id/edit' do |memo_id|
   @memo_id = memo_id.to_i
-  @memo = []
-  if memo = Memo.search_select(id: @memo_id)
-    @memo = memo
-  else
+  @memo = Memo.select(id: @memo_id)
+  if @memo == []
     redirect :not_found
+  else
+    @memo
   end
 
   erb :edit_memo
