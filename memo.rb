@@ -28,18 +28,18 @@ class Memo
 
     def select(id: memo_id)
       memo = []
-      @connection.exec("SELECT * FROM memo WHERE id = #{id}").each do |result|
+      @connection.exec_params(%q{SELECT * FROM memo WHERE id = $1},  ["#{id}"]).each do |result|
         memo = result
       end
       memo
     end
 
-    def update(id: memo_id, title: memo_title, content: memo_content)
-      @connection.exec("UPDATE memo SET title = '#{title}', content = '#{content}' WHERE id = #{id}")
+    def update(id: memo_id, title: memo_title, content: memo_content)     
+      @connection.exec_params(%q{UPDATE memo SET title = $1, content = $2 WHERE id = $3}, ["#{title}", "#{content}", "#{id}"])
     end
 
     def delete(id: memo_id)
-      @connection.exec("DELETE FROM memo WHERE id = #{id}")
+      @connection.exec_params(%q{DELETE FROM memo WHERE id = $1}, ["#{id}"])
     end
   end
 end
