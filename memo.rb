@@ -70,13 +70,8 @@ post '/memos/' do
 end
 
 get '/memos/:memo_id/edit' do |memo_id|
-  @memo_id = memo_id.to_i
-  @memo = Memo.select(id: @memo_id)
-  if @memo == []
-    redirect :not_found
-  else
-    @memo
-  end
+  @memo = Memo.select(id: memo_id.to_i)
+  redirect :not_found if @memo == []
 
   erb :edit_memo
 end
