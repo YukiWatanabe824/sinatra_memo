@@ -32,9 +32,9 @@ class Memo
     end
 
     def select(id: memo_id)
-      memo = []
+      memo = nil
       @connection.exec_params('SELECT * FROM memo WHERE id = $1', [id]).each do |result|
-        memo = result
+          memo = result
       end
       memo
     end
@@ -71,7 +71,7 @@ end
 
 get '/memos/:memo_id/edit' do |memo_id|
   @memo = Memo.select(id: memo_id.to_i)
-  redirect :not_found if @memo == []
+  redirect :not_found if @memo == nil
 
   erb :edit_memo
 end
