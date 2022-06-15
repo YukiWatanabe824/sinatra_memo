@@ -7,15 +7,20 @@ $ git clone https://github.com/YukiWatanabe824/sinatra_memo.git
 $ gem install bundler
 $ bundle install
 
-# データベースのインストールと設定
-$ psql -d postgres
-postgres=# CREATE DATABASE memo_sinatra;
-postgres=# \c memo_sinatra;
+# データベースの設定
+PostgreSQLをインストールし、任意の名称でDBを作成後、以下の内容でテーブルを作成する。
+
 postgres=# CREATE TABLE memo(id serial not null, title varchar(25) not null, content varchar(100) not null);
-postgres=# \q
 
 # データベースの接続設定
-環境変数 "PGDATABASE" に接続するデータベース名を指定し、デフォルト接続設定を変更する
+環境変数を設定する
+
+"環境変数名"        |  内容
+"FY_MEMO_DATABASE"  |  データベース名
+"FY_MEMO_HOST"      |  ローカルホスト
+"FY_MEMO_USER"      |  使用するユーザー名
+"FY_MEMO_PORT"      |  使用しているポート
+"FY_MEMO_PASSWORD"  |  PostgreSQLへの接続パスワード
 
 # プログラムの実行
 $ budnle exec ruby memo.rb

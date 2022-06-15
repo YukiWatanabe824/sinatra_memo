@@ -14,7 +14,13 @@ end
 class Memo
   class << self
     def connect
-      @connection = PG.connect
+      @connection = PG.connect(
+        dbname: ENV["FY_MEMO_DATABASE"],
+        host: ENV["FY_MEMO_HOST"],
+        user: ENV["FY_MEMO_USER"],
+        port: ENV["FY_MEMO_PORT"],
+        password: ENV["FY_MEMO_DATABASE"]
+      )
     end
 
     def create(title: memo_title, content: memo_content)
