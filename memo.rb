@@ -66,7 +66,7 @@ end
 
 post '/memos/' do
   Memo.create(title: params[:title], content: params[:content])
-  redirect '/memos/new/'
+  redirect '/memos/'
 end
 
 get '/memos/:memo_id/edit' do |memo_id|
