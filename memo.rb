@@ -15,11 +15,11 @@ class Memo
   class << self
     def connect
       @connection = PG.connect(
-        dbname: ENV["FY_MEMO_DATABASE"],
-        host: ENV["FY_MEMO_HOST"],
-        user: ENV["FY_MEMO_USER"],
-        port: ENV["FY_MEMO_PORT"],
-        password: ENV["FY_MEMO_DATABASE"]
+        dbname: ENV['FY_MEMO_DATABASE'],
+        host: ENV['FY_MEMO_HOST'],
+        user: ENV['FY_MEMO_USER'],
+        port: ENV['FY_MEMO_PORT'],
+        password: ENV['FY_MEMO_DATABASE']
       )
     end
 
@@ -34,7 +34,7 @@ class Memo
     def select(id: memo_id)
       memo = nil
       @connection.exec_params('SELECT * FROM memo WHERE id = $1', [id]).each do |result|
-          memo = result
+        memo = result
       end
       memo
     end
@@ -71,8 +71,7 @@ end
 
 get '/memos/:memo_id/edit' do |memo_id|
   @memo = Memo.select(id: memo_id.to_i)
-  redirect :not_found if @memo == nil
-
+  redirect :not_found if @memo.nil?
   erb :edit_memo
 end
 
