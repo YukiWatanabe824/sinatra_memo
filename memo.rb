@@ -77,7 +77,7 @@ end
 
 patch '/memos/:memo_id/edit' do |memo_id|
   Memo.update(id: memo_id.to_i, title: params[:title], content: params[:content])
-  redirect "/memos/#{params[:id]}/edit"
+  redirect "/memos/#{memo_id}/edit"
 end
 
 delete '/memos/:memo_id' do |memo_id|
